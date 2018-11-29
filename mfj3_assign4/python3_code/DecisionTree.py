@@ -36,12 +36,13 @@ class DecisionTree:  # TODO: Node at which we have never seen a specific value d
 
         split_feature = features[smallest_index]
         node.set_split_feature(split_feature)
-        features.remove(split_feature)
+        new_features = features.copy()
+        new_features.remove(split_feature)
         splits, pos_to_value = node.dataset.split(split_feature)
         for i in range(len(splits)):
             subset = splits[i]
             child = Node(subset)
-            self.train_node(child, features)
+            self.train_node(child, new_features)
             node.add_child(child, pos_to_value[i])
 
     def classify(self, dataset):
@@ -49,10 +50,14 @@ class DecisionTree:  # TODO: Node at which we have never seen a specific value d
         for features in dataset.data:
             node = self.root
             while node.children:
+                found_child = False
                 for c,v in node.children:
                     if v == features[node.split_feature]:
                         node = c
+                        found_child = True
                         break
+                if not found_child:
+                    node = node.children[0][0]
             preds.append(node.dataset.majority_label())
         return preds
 
