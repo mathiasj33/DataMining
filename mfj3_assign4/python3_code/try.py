@@ -1,15 +1,17 @@
 from Dataset import Dataset
 from DecisionTree import DecisionTree
+from RandomForest import RandomForest
 import ClassifierStats as stats
 # from sklearn.tree import DecisionTreeClassifier as SKTree
 # from sklearn.feature_extraction import DictVectorizer
 # from sklearn.metrics import accuracy_score
 
-dataset = 'balance.scale'
+dataset = 'synthetic.social'
 train = Dataset.from_file('/home/mathias/PycharmProjects/DataMiningClassification/data/{}.train'.format(dataset))
 test = Dataset.from_file('/home/mathias/PycharmProjects/DataMiningClassification/data/{}.test'.format(dataset))
-tree = DecisionTree(100)
-predictions = tree.train_and_classify(train, test)
+model = RandomForest(500, 100, .5)
+# model = DecisionTree(10)
+predictions = model.train_and_classify(train, test)
 accuracy = stats.accuracy(test.labels, predictions)
 conf_matrix = stats.confusion_matrix(test.labels, predictions, len(set(train.labels + test.labels)))
 
