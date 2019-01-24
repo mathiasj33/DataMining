@@ -6,17 +6,17 @@ from DecisionTree import DecisionTree, Node
 class DatasetTest(unittest.TestCase):
     def test_gini(self):
         ds = Dataset([1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0])
-        self.assertAlmostEqual(ds.gini(), 0.459, places=3)
+        self.assertAlmostEqual(ds.calculate_gini_index(), 0.459, places=3)
 
     def test_split(self):
         ds = Dataset([{1:1, 2:2}, {1:1, 2:3}, {1:2, 2:2}], [1,1,1])
-        splits, _ = ds.split(1)
+        splits, _ = ds.split_on_feature(1)
         self.assertEqual([{1:1, 2:2}, {1:1, 2:3}], splits[0].data)
         self.assertEqual([{1:2, 2:2}], splits[1].data)
-        splits, _ = splits[0].split(2)
+        splits, _ = splits[0].split_on_feature(2)
         self.assertEqual([{1: 1, 2: 2}], splits[0].data)
         self.assertEqual([{1: 1, 2: 3}], splits[1].data)
-        splits, _ = ds.split(2)
+        splits, _ = ds.split_on_feature(2)
         self.assertEqual([{1: 1, 2: 2}, {1:2, 2:2}], splits[0].data)
         self.assertEqual([{1:1, 2:3}], splits[1].data)
 

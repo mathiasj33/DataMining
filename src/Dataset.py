@@ -21,7 +21,7 @@ class Dataset:
                 data.append(features)
         return Dataset(data, labels)
 
-    def gini(self):
+    def calculate_gini_index(self):
         class_freqs = self.class_frequencies()
         return 1 - sum([p**2 for p in class_freqs.values()])
 
@@ -33,7 +33,7 @@ class Dataset:
             freqs[label] /= len(self.labels)
         return freqs
 
-    def split(self, feature):
+    def split_on_feature(self, feature):
         value_to_pos = {}
         splits = []
         for i in range(len(self.data)):
